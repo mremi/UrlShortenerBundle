@@ -1,0 +1,22 @@
+{
+    "name": "mremi/url-shortener-bundle",
+    "type": "symfony-bundle",
+    "description": "Implementation of UrlShortener library for Symfony2",
+    "keywords": ["url", "shortener", "api"],
+    "homepage": "https://github.com/mremi/UrlShortenerBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rémi Marseille",
+            "email": "marseille.remi@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "mremi/url-shortener": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Mremi\\UrlShortenerBundle": "" }
+    },
+    "target-dir": "Mremi/UrlShortenerBundle"
+}
