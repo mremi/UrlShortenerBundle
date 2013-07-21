@@ -7,6 +7,10 @@ MremiUrlShortenerBundle
 
 This bundle implements the UrlShortener library for Symfony2.
 
+## Prerequisites
+
+This version of the bundle requires Symfony 2.1+.
+
 **Basic Docs**
 
 * [Installation](#installation)
@@ -16,67 +20,35 @@ This bundle implements the UrlShortener library for Symfony2.
 
 ## Installation
 
-### Step 1) Get the bundle and the library
+Installation is a quick 3 step process:
 
-First, grab the UrlShortener library and MremiUrlShortenerBundle. There are two
-different ways to do this:
+1. Download MremiUrlShortenerBundle using composer
+2. Enable the Bundle
+3. Configure the MremiUrlShortenerBundle
 
-#### Method a) Using composer (symfony 2.1 pattern)
+### Step 1: Download MremiUrlShortenerBundle using composer
 
-Add on composer.json (see http://getcomposer.org/)
+Add MremiUrlShortenerBundle in your composer.json:
 
+```js
+{
     "require": {
-        // ...
         "mremi/url-shortener-bundle": "dev-master"
     }
-
-#### Method b) Using the `deps` file (symfony 2.0 pattern)
-
-Add the following lines to your  `deps` file and then run `php bin/vendors
-install`:
-
-```
-[UrlShortener]
-    git=https://github.com/mremi/UrlShortener
-    target=Mremi/UrlShortener
-
-[UrlShortenerBundle]
-    git=https://github.com/mremi/UrlShortenerBundle
-    target=bundles/Mremi/Bundle/UrlShortenerBundle
+}
 ```
 
-#### Method c) Using submodules
+Now tell composer to download the bundle by running the command:
 
-Run the following commands to bring in the needed libraries as submodules.
-
-```bash
-git submodule add https://github.com/mremi/UrlShortener vendor/Mremi/UrlShortener
-git submodule add https://github.com/mremi/UrlShortenerBundle vendor/bundles/Mremi/Bundle/UrlShortenerBundle
+``` bash
+$ php composer.phar update mremi/url-shortener-bundle
 ```
 
-### Step 2) Register the namespaces
+Composer will install the bundle to your project's `vendor/mremi` directory.
 
-If you installed the bundle by composer, use the created autoload.php  (jump to step 3).
-Add the following two namespace entries to the `registerNamespaces` call
-in your autoloader:
+### Step 2: Enable the bundle
 
-``` php
-<?php
-// app/autoload.php
-
-$loader->registerNamespaces(array(
-    // ...
-    'Mremi' => array(
-        __DIR__.'/../vendor',
-        __DIR__.'/../vendor/bundles',
-    ),
-    // ...
-));
-```
-
-### Step 3) Register the bundle
-
-To start using the bundle, register it in your Kernel:
+Enable the bundle in the kernel:
 
 ``` php
 <?php
@@ -88,11 +60,10 @@ public function registerBundles()
         // ...
         new Mremi\UrlShortenerBundle\MremiUrlShortenerBundle(),
     );
-    // ...
 }
 ```
 
-### Step 4) Configure the bundle
+### Step 3: Configure the MremiUrlShortenerBundle
 
 Fow now, you just have to configure your Bit.ly username and password.
 
