@@ -24,6 +24,7 @@ class MremiUrlShortenerExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('bitly.xml');
+        $loader->load('http.xml');
 
         $this->configureBitly($container, $config);
     }

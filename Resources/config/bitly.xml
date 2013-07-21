@@ -6,11 +6,13 @@
 
     <services>
         <service id="mremi_url_shortener.bitly.oauth_client" class="Mremi\UrlShortener\Bitly\OAuthClient" public="false">
+            <argument type="service" id="mremi_url_shortener.http.client_factory" />
             <argument />
             <argument />
         </service>
 
         <service id="mremi_url_shortener.bitly.shortener" class="Mremi\UrlShortener\Bitly\BitlyShortener">
+            <argument type="service" id="mremi_url_shortener.http.client_factory" />
             <argument type="service" id="mremi_url_shortener.bitly.oauth_client" />
         </service>
     </services>
