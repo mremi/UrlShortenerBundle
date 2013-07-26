@@ -30,21 +30,23 @@ class TestShortenerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $shortener = $this->getBitlyShortener();
+        $chainProvider  = $this->getChainProvider();
 
-        $shortened = $shortener->shorten('http://www.google.com');
+        foreach ($chainProvider->getProviders() as $provider) {
+            $shortened = $provider->shorten('http://www.google.com');
 
-        $output->writeln(sprintf('<info>Testing to shorten http://www.google.com :</info> %s', $shortened));
-        $output->writeln(sprintf('<info>Testing to expand %s :</info> %s', $shortened, $shortener->expand($shortened)));
+            $output->writeln(sprintf('<info>Testing to shorten http://www.google.com with %s provider:</info> %s', $provider->getName(), $shortened));
+            $output->writeln(sprintf('<info>Testing to expand %s with %s provider:</info> %s', $shortened, $provider->getName(), $provider->expand($shortened)));
+        }
     }
 
     /**
-     * Gets the bitly shortener service
+     * Gets the chain provider service
      *
-     * @return \Mremi\UrlShortener\Bitly\BitlyShortener
+     * @return \Mremi\UrlShortener\Provider\ChainProvider
      */
-    private function getBitlyShortener()
+    private function getChainProvider()
     {
-        return $this->getContainer()->get('mremi_url_shortener.bitly.shortener');
+        return $this->getContainer()->get('mremi_url_shortener.chain_provider');
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Mremi\UrlShortenerBundle;
 
+use Mremi\UrlShortenerBundle\DependencyInjection\Compiler\RegisterProvidersCompilerPass;
+
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
@@ -11,4 +14,13 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class MremiUrlShortenerBundle extends Bundle
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container->addCompilerPass(new RegisterProvidersCompilerPass);
+    }
 }

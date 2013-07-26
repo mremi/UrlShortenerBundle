@@ -14,7 +14,8 @@ This version of the bundle requires Symfony 2.1+.
 **Basic Docs**
 
 * [Installation](#installation)
-* [Bit.ly API](#bitly-api)
+* [Chain providers](#chain-providers)
+* [Custom provider](#custom-provider)
 
 <a name="installation"></a>
 
@@ -71,22 +72,51 @@ Fow now, you just have to configure your Bit.ly username and password.
 # app/config/config.yml
 mremi_url_shortener:
     bitly:
+        enabled:  true
         username: your_bitly_username
         password: your_bitly_password
+
+    google:
+        enabled: true
+        api_key: your_api_key
 ```
 
-<a name="bitly-api"></a>
+<a name="chain-providers"></a>
 
-## Bit.ly API
+## Chain providers
 
 One service allow you to shorten/expand URL, to use like this:
 
 ```php
 <?php
 
-$shortener = $container->get('mremi_url_shortener.bitly.shortener');
+$chainProvider = $container->get('mremi_url_shortener.chain_provider');
 
-$shortened = $shortener->shorten('http://www.google.com');
+$shortened = $chainProvider->getProvider('bitly')->shorten('http://www.google.com');
 
-$expanded = $shortener->expand('http://bit.ly/13TE0qU');
+$expanded = $chainProvider->getProvider('google')->expand('http://goo.gl/fbsS');
+```
+
+<a name="custom-provider"></a>
+
+## Custom provider
+
+You can add your own provider to the chain providers:
+
+1. Create a service which implements `\Mremi\UrlShortener\Provider\UrlShortenerProviderInterface`
+2. Add the tag `mremi_url_shortener.provider`
+
+``` xml
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="acme.custom_provider" class="Acme\YourBundle\Provider\CustomProvider">
+            <tag name="mremi_url_shortener.provider" />
+        </service>
+    </services>
+</container>
 ```

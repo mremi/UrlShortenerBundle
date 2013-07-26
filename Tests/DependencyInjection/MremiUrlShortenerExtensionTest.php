@@ -20,66 +20,61 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     private $configuration;
 
     /**
-     * Tests extension loading throws exception if bitly is not set
+     * Tests extension loading throws exception if Bit.ly's username is not set
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid configuration for path "mremi_url_shortener": You must set a Bit.ly username or set the enabled flag to false.
      */
-    public function testUrlShortenerLoadThrowsExceptionUnlessBitlySet()
+    public function testUrlShortenerLoadThrowsExceptionUnlessBitlyUsernameSet()
     {
         $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
-        unset($config['bitly']);
-        $loader->load(array($config), new ContainerBuilder);
-    }
-
-    /**
-     * Tests extension loading throws exception if username is not set
-     *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
-    public function testUrlShortenerLoadThrowsExceptionUnlessUsernameSet()
-    {
-        $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
+        $config = $this->getFullConfig();
+        $config['bitly']['enabled'] = true;
         unset($config['bitly']['username']);
         $loader->load(array($config), new ContainerBuilder);
     }
 
     /**
-     * Tests extension loading throws exception if username is empty
+     * Tests extension loading throws exception if Bit.ly's username is empty
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid configuration for path "mremi_url_shortener": You must set a Bit.ly username or set the enabled flag to false.
      */
-    public function testUrlShortenerLoadThrowsExceptionIfUsernameEmpty()
+    public function testUrlShortenerLoadThrowsExceptionUnlessBitlyUsernameEmpty()
     {
         $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
+        $config = $this->getFullConfig();
+        $config['bitly']['enabled'] = true;
         $config['bitly']['username'] = '';
         $loader->load(array($config), new ContainerBuilder);
     }
 
     /**
-     * Tests extension loading throws exception if password is not set
+     * Tests extension loading throws exception if Bit.ly's password is not set
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid configuration for path "mremi_url_shortener": You must set a Bit.ly password or set the enabled flag to false.
      */
-    public function testUrlShortenerLoadThrowsExceptionUnlessPasswordSet()
+    public function testUrlShortenerLoadThrowsExceptionUnlessBitlyPasswordSet()
     {
         $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
+        $config = $this->getFullConfig();
+        $config['bitly']['enabled'] = true;
         unset($config['bitly']['password']);
         $loader->load(array($config), new ContainerBuilder);
     }
 
     /**
-     * Tests extension loading throws exception if password is empty
+     * Tests extension loading throws exception if Bit.ly's password is empty
      *
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid configuration for path "mremi_url_shortener": You must set a Bit.ly password or set the enabled flag to false.
      */
-    public function testUrlShortenerLoadThrowsExceptionIfPasswordEmpty()
+    public function testUrlShortenerLoadThrowsExceptionUnlessBitlyPasswordEmpty()
     {
         $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
+        $config = $this->getFullConfig();
+        $config['bitly']['enabled'] = true;
         $config['bitly']['password'] = '';
         $loader->load(array($config), new ContainerBuilder);
     }
@@ -89,9 +84,13 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testUrlShortenerLoadServicesWithDefaults()
     {
-        $this->createEmptyConfiguration();
+        $this->createConfiguration();
 
-        $this->assertHasDefinition('mremi_url_shortener.bitly.shortener');
+        $this->assertHasDefinition('mremi_url_shortener.bitly.oauth_client');
+        $this->assertHasDefinition('mremi_url_shortener.bitly.provider');
+        $this->assertHasDefinition('mremi_url_shortener.google.provider');
+        $this->assertHasDefinition('mremi_url_shortener.chain_provider');
+        $this->assertHasDefinition('mremi_url_shortener.http.client_factory');
     }
 
     /**
@@ -103,13 +102,17 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Creates an empty configuration
+     * Creates a configuration
      */
-    protected function createEmptyConfiguration()
+    protected function createConfiguration()
     {
         $this->configuration = new ContainerBuilder;
         $loader = new MremiUrlShortenerExtension;
-        $config = $this->getEmptyConfig();
+        $config = $this->getFullConfig();
+
+        $config['bitly']['enabled']  = true;
+        $config['google']['enabled'] = true;
+
         $loader->load(array($config), $this->configuration);
         $this->assertTrue($this->configuration instanceof ContainerBuilder);
     }
@@ -119,12 +122,17 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    protected function getEmptyConfig()
+    protected function getFullConfig()
     {
         $yaml = <<<EOF
 bitly:
+    enabled:  false
     username: your_bitly_username
     password: your_bitly_password
+
+google:
+    enabled: false
+    api_key: your_google_api_key
 EOF;
         $parser = new Parser;
 

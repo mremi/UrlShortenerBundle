@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="mremi_url_shortener.google.provider" class="Mremi\UrlShortener\Provider\Google\GoogleProvider">
+            <tag name="mremi_url_shortener.provider" />
+
+            <argument type="service" id="mremi_url_shortener.http.client_factory" />
+            <argument />
+        </service>
+    </services>
+</container>
