@@ -26,8 +26,26 @@ class MremiUrlShortenerExtension extends Extension
         $loader->load('chain.xml');
         $loader->load('http.xml');
 
+        $this->configureLinkManager($container, $config, $loader);
         $this->configureBitly($container, $config, $loader);
         $this->configureGoogle($container, $config, $loader);
+    }
+
+    /**
+     * Configures the Link Manager service
+     *
+     * @param ContainerBuilder $container A container builder instance
+     * @param array            $config    An array of configuration
+     * @param XmlFileLoader    $loader    An XML file loader instance
+     */
+    private function configureLinkManager(ContainerBuilder $container, array $config, XmlFileLoader $loader)
+    {
+        $loader->load('orm.xml');
+
+        $container->setAlias('mremi_url_shortener.link_manager', 'mremi_url_shortener.link_manager.doctrine');
+
+        $definition = $container->findDefinition('mremi_url_shortener.link_manager');
+        $definition->replaceArgument(0, $config['link_class']);
     }
 
     /**
@@ -66,6 +84,6 @@ class MremiUrlShortenerExtension extends Extension
         $loader->load('google.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
-        $definition->replaceArgument(1, $config['google']['api_key']);
+        $definition->replaceArgument(2, $config['google']['api_key']);
     }
 }

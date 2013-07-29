@@ -33,10 +33,12 @@ class TestShortenerCommand extends ContainerAwareCommand
         $chainProvider  = $this->getChainProvider();
 
         foreach ($chainProvider->getProviders() as $provider) {
-            $shortened = $provider->shorten('http://www.google.com');
+            $shortened = $provider->shorten('http://www.google.com/')->getShortUrl();
 
-            $output->writeln(sprintf('<info>Testing to shorten http://www.google.com with %s provider:</info> %s', $provider->getName(), $shortened));
-            $output->writeln(sprintf('<info>Testing to expand %s with %s provider:</info> %s', $shortened, $provider->getName(), $provider->expand($shortened)));
+            $output->writeln(sprintf('* %s provider:', $provider->getName()));
+
+            $output->writeln(sprintf('    <info>Shorten <comment>http://www.google.com/</comment>:</info> %s', $shortened));
+            $output->writeln(sprintf('    <info>Expand <comment>%s</comment>:</info> %s', $shortened, $provider->expand($shortened)->getLongUrl()));
         }
     }
 

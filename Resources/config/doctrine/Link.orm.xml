@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="Mremi\UrlShortenerBundle\Entity\Link">
+
+        <field name="providerName" column="provider_name" type="string"   length="255" />
+        <field name="shortUrl"     column="short_url"     type="string"   length="255" />
+        <field name="longUrl"      column="long_url"      type="string"   length="255" />
+        <field name="createdAt"    column="created_at"    type="datetime"              />
+
+    </mapped-superclass>
+
+</doctrine-mapping>

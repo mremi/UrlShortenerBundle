@@ -22,6 +22,9 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->scalarNode('link_class')
+                    ->defaultValue('Mremi\UrlShortener\Model\Link')->cannotBeEmpty()
+                ->end()
                 ->arrayNode('bitly')
                     ->addDefaultsIfNotSet()
                     ->children()

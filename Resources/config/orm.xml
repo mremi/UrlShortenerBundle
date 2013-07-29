@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="mremi_url_shortener.entity_manager" factory-service="doctrine" factory-method="getManager" class="Doctrine\ORM\EntityManager" public="false">
+        </service>
+
+        <service id="mremi_url_shortener.link_manager.doctrine" class="Mremi\UrlShortenerBundle\Doctrine\LinkManager" public="false">
+            <argument />
+            <argument type="service" id="mremi_url_shortener.entity_manager" />
+            <argument type="service" id="mremi_url_shortener.chain_provider" />
+        </service>
+    </services>
+</container>

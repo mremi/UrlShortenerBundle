@@ -20,6 +20,20 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     private $configuration;
 
     /**
+     * Tests extension loading throws exception if link model class is empty
+     *
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage The path "mremi_url_shortener.link_class" cannot contain an empty value, but got "".
+     */
+    public function testUrlShortenerLoadThrowsExceptionIfLinkModelClassEmpty()
+    {
+        $loader = new MremiUrlShortenerExtension;
+        $config = $this->getFullConfig();
+        $config['link_class'] = '';
+        $loader->load(array($config), new ContainerBuilder);
+    }
+
+    /**
      * Tests extension loading throws exception if Bit.ly's username is not set
      *
      * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
@@ -91,6 +105,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertHasDefinition('mremi_url_shortener.google.provider');
         $this->assertHasDefinition('mremi_url_shortener.chain_provider');
         $this->assertHasDefinition('mremi_url_shortener.http.client_factory');
+        $this->assertHasDefinition('mremi_url_shortener.link_manager.doctrine');
+        $this->assertHasDefinition('mremi_url_shortener.link_manager');
     }
 
     /**
@@ -125,6 +141,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getFullConfig()
     {
         $yaml = <<<EOF
+link_class:   Mremi\UrlShortener\Model\Link
+
 bitly:
     enabled:  false
     username: your_bitly_username
