@@ -53,25 +53,27 @@ class LinkManager extends BaseLinkManager
     }
 
     /**
-     * Finds one link by a short URL. If link does not exist in storage system,
-     * try to fetch it using the given provider.
+     * Finds one link by a provider and a short URL. If link does not exist in
+     * storage system, try to fetch it using the given provider.
      *
-     * @param string $shortUrl     A short URL
-     * @param string $providerName A provider name, only if you want to fetch data if does not exist
+     * @param string  $providerName      A provider name, first used to retrieve data from database, or call him if fetchFromProvider is TRUE
+     * @param string  $shortUrl          A short URL
+     * @param boolean $fetchFromProvider TRUE whether you want to fetch data if does not exist in database, default FALSE
      *
      * @return LinkInterface|null
      */
-    public function findOneByShortUrl($shortUrl, $providerName = null)
+    public function findOneByProviderAndShortUrl($providerName, $shortUrl, $fetchFromProvider = false)
     {
         $link = $this->findOneBy(array(
-            'shortUrl' => $shortUrl,
+            'providerName' => $providerName,
+            'shortUrl'     => $shortUrl,
         ));
 
         if ($link) {
             return $link;
         }
 
-        if (null === $providerName) {
+        if (false === $fetchFromProvider) {
             return null;
         }
 
@@ -79,25 +81,27 @@ class LinkManager extends BaseLinkManager
     }
 
     /**
-     * Finds one link by a long URL. If link does not exist in storage system,
-     * try to fetch it using the given provider.
+     * Finds one link by a provider and a long URL. If link does not exist in
+     * storage system, try to fetch it using the given provider.
      *
-     * @param string $longUrl      A long URL
-     * @param string $providerName A provider name, only if you want to fetch data if does not exist
+     * @param string  $providerName      A provider name, first used to retrieve data from database, or call him if fetchFromProvider is TRUE
+     * @param string  $longUrl           A long URL
+     * @param boolean $fetchFromProvider TRUE whether you want to fetch data if does not exist in database, default FALSE
      *
      * @return LinkInterface|null
      */
-    public function findOneByLongUrl($longUrl, $providerName = null)
+    public function findOneByProviderAndLongUrl($providerName, $longUrl, $fetchFromProvider = false)
     {
         $link = $this->findOneBy(array(
-            'longUrl' => $longUrl,
+            'providerName' => $providerName,
+            'longUrl'      => $longUrl,
         ));
 
         if ($link) {
             return $link;
         }
 
-        if (null === $providerName) {
+        if (false === $fetchFromProvider) {
             return null;
         }
 

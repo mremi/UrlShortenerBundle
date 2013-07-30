@@ -20,31 +20,37 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
     private $chainProvider;
 
     /**
-     * Tests the findOneByShortUrl method with no fetch
+     * Tests the findOneByProviderAndShortUrl method with no fetch
      */
-    public function testFindOneByShortUrlNoFetch()
+    public function testFindOneByProviderAndShortUrlNoFetch()
     {
         $this->manager
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('shortUrl' => 'http://goo.gl/fbsS')));
+            ->with($this->equalTo(array(
+                'providerName' => 'google',
+                'shortUrl'     => 'http://goo.gl/fbsS',
+            )));
 
         $this->chainProvider
             ->expects($this->never())
             ->method('getProvider');
 
-        $this->manager->findOneByShortUrl('http://goo.gl/fbsS');
+        $this->manager->findOneByProviderAndShortUrl('google', 'http://goo.gl/fbsS');
     }
 
     /**
-     * Tests the findOneByShortUrl method with fetch
+     * Tests the findOneByProviderAndShortUrl method with fetch
      */
-    public function testFindOneByShortUrlFetch()
+    public function testFindOneByProviderAndShortUrlFetch()
     {
         $this->manager
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('shortUrl' => 'http://goo.gl/fbsS')));
+            ->with($this->equalTo(array(
+                'providerName' => 'google',
+                'shortUrl'     => 'http://goo.gl/fbsS',
+            )));
 
         $this->chainProvider
             ->expects($this->once())
@@ -52,35 +58,41 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
-        $this->manager->findOneByShortUrl('http://goo.gl/fbsS', 'google');
+        $this->manager->findOneByProviderAndShortUrl('google', 'http://goo.gl/fbsS', true);
     }
 
     /**
-     * Tests the findOneByLongUrl method with no fetch
+     * Tests the findOneByProviderAndLongUrl method with no fetch
      */
-    public function testFindOneByLongUrlNoFetch()
+    public function testFindOneByProviderAndLongUrlNoFetch()
     {
         $this->manager
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('longUrl' => 'http://www.google.com/')));
+            ->with($this->equalTo(array(
+                'providerName' => 'google',
+                'longUrl'      => 'http://www.google.com/',
+            )));
 
         $this->chainProvider
             ->expects($this->never())
             ->method('getProvider');
 
-        $this->manager->findOneByLongUrl('http://www.google.com/');
+        $this->manager->findOneByProviderAndLongUrl('google', 'http://www.google.com/');
     }
 
     /**
-     * Tests the findOneByLongUrl method with fetch
+     * Tests the findOneByProviderAndLongUrl method with fetch
      */
-    public function testFindOneByLongUrlFetch()
+    public function testFindOneByProviderAndLongUrlFetch()
     {
         $this->manager
             ->expects($this->once())
             ->method('findOneBy')
-            ->with($this->equalTo(array('longUrl' => 'http://www.google.com/')));
+            ->with($this->equalTo(array(
+                'providerName' => 'google',
+                'longUrl'      => 'http://www.google.com/',
+            )));
 
         $this->chainProvider
             ->expects($this->once())
@@ -88,7 +100,7 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
-        $this->manager->findOneByLongUrl('http://www.google.com/', 'google');
+        $this->manager->findOneByProviderAndLongUrl('google', 'http://www.google.com/', true);
     }
 
     /**
