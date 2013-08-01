@@ -161,13 +161,19 @@ mremi_url_shortener:
     link_class:   Mremi\UrlShortener\Model\Link
 
     bitly:
-        enabled:  true
-        username: your_bitly_username
-        password: your_bitly_password
+        enabled:             true
+        username:            your_bitly_username
+        password:            your_bitly_password
+        options:
+            connect_timeout: 1
+            timeout:         1
 
     google:
-        enabled: true
-        api_key: your_api_key
+        enabled:             true
+        api_key:             your_api_key
+        options:
+            connect_timeout: 1
+            timeout:         1
 ```
 
 ### Step 5: Update your database schema (optional)

@@ -17,6 +17,7 @@
             <argument type="service" id="mremi_url_shortener.http.client_factory" />
             <argument type="service" id="mremi_url_shortener.link_manager" />
             <argument type="service" id="mremi_url_shortener.bitly.oauth_client" />
+            <argument />
         </service>
     </services>
 </container>

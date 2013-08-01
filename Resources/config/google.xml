@@ -11,6 +11,7 @@
             <argument type="service" id="mremi_url_shortener.http.client_factory" />
             <argument type="service" id="mremi_url_shortener.link_manager" />
             <argument />
+            <argument />
         </service>
     </services>
 </container>

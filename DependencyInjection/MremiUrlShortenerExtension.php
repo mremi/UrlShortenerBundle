@@ -66,6 +66,9 @@ class MremiUrlShortenerExtension extends Extension
         $definition = $container->getDefinition('mremi_url_shortener.bitly.oauth_client');
         $definition->replaceArgument(1, $config['bitly']['username']);
         $definition->replaceArgument(2, $config['bitly']['password']);
+
+        $definition = $container->getDefinition('mremi_url_shortener.bitly.provider');
+        $definition->replaceArgument(3, $config['bitly']['options']);
     }
 
     /**
@@ -85,5 +88,6 @@ class MremiUrlShortenerExtension extends Extension
 
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
         $definition->replaceArgument(2, $config['google']['api_key']);
+        $definition->replaceArgument(3, $config['google']['options']);
     }
 }

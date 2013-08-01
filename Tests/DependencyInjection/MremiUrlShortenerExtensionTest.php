@@ -144,13 +144,19 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
 link_class:   Mremi\UrlShortener\Model\Link
 
 bitly:
-    enabled:  false
-    username: your_bitly_username
-    password: your_bitly_password
+    enabled:             false
+    username:            your_bitly_username
+    password:            your_bitly_password
+    options:
+        connect_timeout: 1
+        timeout:         1
 
 google:
-    enabled: false
-    api_key: your_google_api_key
+    enabled:             false
+    api_key:             your_google_api_key
+    options:
+        connect_timeout: 1
+        timeout:         1
 EOF;
         $parser = new Parser;
 
