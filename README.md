@@ -17,6 +17,7 @@ This version of the bundle requires Symfony 2.1+.
 * [Chain providers](#chain-providers)
 * [Custom provider](#custom-provider)
 * [Test configured providers](#test-configured-providers)
+* [Twig functions](#twig-functions)
 
 <a name="installation"></a>
 
@@ -243,4 +244,18 @@ You can now test the providers you configured with the following command line:
 
 ``` bash
 $ app/console mremi:url-shortener:test
+```
+
+<a name="twig-functions"></a>
+
+## Twig functions
+
+You can also simply shorten/expand a URL from a twig file. But It should be
+used with caution because it's not HTTP friendly.
+
+``` html+jinja
+{# src/Acme/YourBundle/Resources/views/index.html.twig #}
+
+{{ mremi_url_shorten('bitly', 'http://www.google.com') }}
+{{ mremi_url_expand('google', 'http://goo.gl/fbsS') }}
 ```

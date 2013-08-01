@@ -107,6 +107,7 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertHasDefinition('mremi_url_shortener.http.client_factory');
         $this->assertHasDefinition('mremi_url_shortener.link_manager.doctrine');
         $this->assertHasDefinition('mremi_url_shortener.link_manager');
+        $this->assertHasDefinition('mremi_url_shortener.twig.url_shortener_extension');
     }
 
     /**
