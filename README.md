@@ -17,6 +17,7 @@ This version of the bundle requires Symfony 2.1+.
 * [Chain providers](#chain-providers)
 * [Custom provider](#custom-provider)
 * [Test configured providers](#test-configured-providers)
+* [Retrieve link](#retrieve-link)
 * [Twig functions](#twig-functions)
 
 <a name="installation"></a>
@@ -244,6 +245,32 @@ You can now test the providers you configured with the following command line:
 
 ``` bash
 $ app/console mremi:url-shortener:test
+```
+
+<a name="retrieve-link"></a>
+
+## Retrieve link
+
+If you configured the data storage (steps 3 & 5), you can retrieve some links
+using these finders:
+
+```php
+<?php
+
+$linkManager = $container->get('mremi_url_shortener.link_manager');
+
+$linkManager->findOneByProviderAndShortUrl('bitly', 'http://bit.ly/ze6poY');
+
+$linkManager->findOneByProviderAndLongUrl('google', 'http://www.google.com');
+```
+
+You can specify to fetch the expected link if it does not exist in database by
+adding `true` as third argument:
+
+```php
+<?php
+
+$linkManager->findOneByProviderAndShortUrl('bitly', 'http://bit.ly/ze6poY', true);
 ```
 
 <a name="twig-functions"></a>
