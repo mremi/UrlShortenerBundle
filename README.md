@@ -5,7 +5,7 @@ MremiUrlShortenerBundle
 [![Total Downloads](https://poser.pugx.org/mremi/url-shortener-bundle/downloads.png)](https://packagist.org/packages/mremi/url-shortener-bundle)
 [![Latest Stable Version](https://poser.pugx.org/mremi/url-shortener-bundle/v/stable.png)](https://packagist.org/packages/mremi/url-shortener-bundle)
 
-This bundle implements the UrlShortener library for Symfony2.
+This bundle implements the [UrlShortener](https://github.com/mremi/UrlShortener) library for Symfony2.
 
 ## Prerequisites
 
@@ -19,6 +19,7 @@ This version of the bundle requires Symfony 2.1+.
 * [Test configured providers](#test-configured-providers)
 * [Retrieve link](#retrieve-link)
 * [Twig functions](#twig-functions)
+* [Profiler](#profiler)
 
 <a name="installation"></a>
 
@@ -286,3 +287,13 @@ used with caution because it's not HTTP friendly.
 {{ mremi_url_shorten('bitly', 'http://www.google.com') }}
 {{ mremi_url_expand('google', 'http://goo.gl/fbsS') }}
 ```
+<a name="profiler"></a>
+
+## Profiler
+
+If your are in debug mode (see your front controller), you can check in the web
+debug toolbar the configured providers and some statistics from the current
+HTTP request: number of requests per provider, consumed memory, request
+duration...
+
+![Screenshot](https://raw.github.com/mremi/UrlShortenerBundle/master/Resources/doc/images/profiler.png)

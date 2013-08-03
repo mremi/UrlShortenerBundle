@@ -1,0 +1,69 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    <div class="sf-toolbar-block">
+        <div class="sf-toolbar-icon">
+            <a href="{{ path('_profiler', { 'token': token, 'panel': name }) }}">
+                {# fake image span #}<span style="width:0px; height: 28px; vertical-align: middle;"></span>
+                {% set providersCounter = collector.providers|length %}
+                <span class="sf-toolbar-status">{{ providersCounter }}</span> URL Shortener{{ providersCounter > 1 ? 's' : '' }}
+            </a>
+        </div>
+        <div class="sf-toolbar-info">
+            {% set counter = 0 %}
+
+            {% for providerName, provider in collector.providers %}
+                <div class="sf-toolbar-info-piece">
+                    {% set counter = counter + provider|length %}
+
+                    <b>{{ providerName }}</b>
+                    <span>{{ provider|length }}</span>
+                </div>
+            {% endfor %}
+
+            <div class="sf-toolbar-info-piece">
+                <b>Total</b>
+                <span class="sf-toolbar-status sf-toolbar-status-green">{{ counter }}</span>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        {# todo: add icon #}
+        {#<span class="icon"><img src="" alt="" /></span>#}
+        {% set providersCounter = collector.providers|length %}
+        <strong>URL Shortener{{ providersCounter > 1 ? 's' : '' }}</strong>
+        <span class="count">
+            <span>{{ collector.providers|length }}</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% for providerName, provider in collector.providers %}
+        <h2>Provider "{{ providerName }}"</h2>
+
+        <table>
+            <tr>
+                <th>#</th>
+                <th>Submitted URL</th>
+                <th>Transformed URL</th>
+                <th>Memory (diff)</th>
+                <th>Memory (peak)</th>
+                <th>Duration</th>
+            </tr>
+            {% for counter, trace in provider %}
+                <tr>
+                    <th>{{ counter }}</th>
+                    <td>{{ trace.submitted_url }}</td>
+                    <td>{{ trace.transformed_url }}</td>
+                    <td>{{ ((trace.memory_end - trace.memory_start) / 1000) | number_format(0) }} Kb</td>
+                    <td>{{ (trace.memory_peak / 1000) | number_format(0) }} Kb</td>
+                    <td>{{ trace.duration | number_format(2) }} ms</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

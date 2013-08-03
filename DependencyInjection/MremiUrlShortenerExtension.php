@@ -30,6 +30,7 @@ class MremiUrlShortenerExtension extends Extension
         $this->configureLinkManager($container, $config, $loader);
         $this->configureBitly($container, $config, $loader);
         $this->configureGoogle($container, $config, $loader);
+        $this->configureProfiler($container, $config, $loader);
     }
 
     /**
@@ -90,5 +91,26 @@ class MremiUrlShortenerExtension extends Extension
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
         $definition->replaceArgument(2, $config['google']['api_key']);
         $definition->replaceArgument(3, $config['google']['options']);
+    }
+
+    /**
+     * Configures the profiler service
+     *
+     * @param ContainerBuilder $container A container builder instance
+     * @param array            $config    An array of configuration
+     * @param XmlFileLoader    $loader    An XML file loader instance
+     */
+    private function configureProfiler(ContainerBuilder $container, array $config, XmlFileLoader $loader)
+    {
+        // for unit tests
+        if (!$container->hasParameter('kernel.debug')) {
+            return;
+        }
+
+        if (!$container->getParameter('kernel.debug')) {
+            return;
+        }
+
+        $loader->load('profiler.xml');
     }
 }

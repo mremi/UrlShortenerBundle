@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="mremi_url_shortener.provider.data_collector" class="Mremi\UrlShortenerBundle\DataCollector\ProviderDataCollector">
+            <tag name="data_collector" template="MremiUrlShortenerBundle:Collector:url_shortener" id="url_shortener" />
+
+            <argument type="service" id="mremi_url_shortener.chain_provider" />
+        </service>
+    </services>
+</container>

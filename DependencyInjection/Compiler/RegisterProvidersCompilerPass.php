@@ -4,6 +4,7 @@ namespace Mremi\UrlShortenerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -22,10 +23,32 @@ class RegisterProvidersCompilerPass implements CompilerPassInterface
             return;
         }
 
-        $definition = $container->getDefinition('mremi_url_shortener.chain_provider');
+        $chainProviderDefinition = $container->getDefinition('mremi_url_shortener.chain_provider');
 
         foreach ($container->findTaggedServiceIds('mremi_url_shortener.provider') as $id => $attributes) {
-            $definition->addMethodCall('addProvider', array(new Reference($id)));
+            if ($container->hasDefinition('mremi_url_shortener.provider.data_collector')) {
+                $originId = sprintf('%s.origin', $id);
+
+                // make origin provider private
+                $providerDefinition = $container->getDefinition($id);
+                $providerDefinition->setPublic(false);
+
+                // create new provider definition
+                $container->setDefinition($originId, $providerDefinition);
+
+                // remove old one
+                $container->removeDefinition($id);
+
+                // create proxy
+                $providerProxyDefinition = new Definition('Mremi\UrlShortenerBundle\Provider\ProviderProxy');
+                $providerProxyDefinition->addTag('mremi_url_shortener.provider');
+                $providerProxyDefinition->addArgument(new Reference($originId));
+                $providerProxyDefinition->addArgument(new Reference('debug.stopwatch'));
+
+                $container->setDefinition($id, $providerProxyDefinition);
+            }
+
+            $chainProviderDefinition->addMethodCall('addProvider', array(new Reference($id)));
         }
     }
 }
