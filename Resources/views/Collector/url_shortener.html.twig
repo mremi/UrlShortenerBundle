@@ -36,7 +36,7 @@
         {% set providersCounter = collector.providers|length %}
         <strong>URL Shortener{{ providersCounter > 1 ? 's' : '' }}</strong>
         <span class="count">
-            <span>{{ collector.providers|length }}</span>
+            <span>{{ providersCounter }}</span>
         </span>
     </span>
 {% endblock %}
