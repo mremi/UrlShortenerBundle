@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterProvidersCompilerPass implements CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {

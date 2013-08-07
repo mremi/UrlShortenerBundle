@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TestShortenerCommand extends ContainerAwareCommand
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function configure()
     {
@@ -26,7 +26,7 @@ class TestShortenerCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

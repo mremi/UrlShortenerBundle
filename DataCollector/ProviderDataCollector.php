@@ -46,7 +46,7 @@ class ProviderDataCollector implements DataCollectorInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function collect(Request $request, Response $response, \Exception $exception = null)
     {
@@ -76,7 +76,7 @@ class ProviderDataCollector implements DataCollectorInterface, \Serializable
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

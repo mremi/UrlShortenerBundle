@@ -27,7 +27,7 @@ class UrlShortenerExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFunctions()
     {
@@ -68,7 +68,7 @@ class UrlShortenerExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

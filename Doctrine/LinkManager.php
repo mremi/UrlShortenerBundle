@@ -41,7 +41,7 @@ class LinkManager extends BaseLinkManager
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function save(LinkInterface $link, $flush = false)
     {
