@@ -1,6 +1,8 @@
 MremiUrlShortenerBundle
 =======================
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/ce0d627a-7dbe-49ab-a247-bf21b53b0afe/big.png)](https://insight.sensiolabs.com/projects/ce0d627a-7dbe-49ab-a247-bf21b53b0afe)
+
 [![Build Status](https://api.travis-ci.org/mremi/UrlShortenerBundle.png?branch=master)](https://travis-ci.org/mremi/UrlShortenerBundle)
 [![Total Downloads](https://poser.pugx.org/mremi/url-shortener-bundle/downloads.png)](https://packagist.org/packages/mremi/url-shortener-bundle)
 [![Latest Stable Version](https://poser.pugx.org/mremi/url-shortener-bundle/v/stable.png)](https://packagist.org/packages/mremi/url-shortener-bundle)
