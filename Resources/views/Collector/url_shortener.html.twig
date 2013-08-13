@@ -57,8 +57,8 @@
             {% for counter, trace in provider %}
                 <tr>
                     <th>{{ counter }}</th>
-                    <td>{{ trace.submitted_url }}</td>
-                    <td>{{ trace.transformed_url }}</td>
+                    <td><a href="{{ trace.submitted_url }}" target="_blank">{{ trace.submitted_url }}</a></td>
+                    <td><a href="{{ trace.transformed_url }}" target="_blank">{{ trace.transformed_url }}</a></td>
                     <td>{{ ((trace.memory_end - trace.memory_start) / 1000) | number_format(0) }} Kb</td>
                     <td>{{ (trace.memory_peak / 1000) | number_format(0) }} Kb</td>
                     <td>{{ trace.duration | number_format(2) }} ms</td>
