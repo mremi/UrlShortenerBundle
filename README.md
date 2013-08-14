@@ -207,11 +207,15 @@ One service allow you to shorten/expand URL, to use like this:
 ```php
 <?php
 
+$linkManager   = $container->get('mremi_url_shortener.link_manager');
 $chainProvider = $container->get('mremi_url_shortener.chain_provider');
 
-$shortened = $chainProvider->getProvider('bitly')->shorten('http://www.google.com');
+$link = $linkManager->create();
+$link->setLongUrl('http://www.google.com');
 
-$expanded = $chainProvider->getProvider('google')->expand('http://goo.gl/fbsS');
+$chainProvider->getProvider('bitly')->shorten($link);
+
+$chainProvider->getProvider('google')->expand($link);
 ```
 
 <a name="custom-provider"></a>
@@ -233,8 +237,6 @@ You can add your own provider to the chain providers:
     <services>
         <service id="acme.custom_provider" class="Acme\YourBundle\Provider\CustomProvider">
             <tag name="mremi_url_shortener.provider" />
-
-            <argument type="service" id="mremi_url_shortener.link_manager" />
         </service>
     </services>
 </container>
@@ -254,34 +256,27 @@ $ app/console mremi:url-shortener:test
 
 ## Retrieve link
 
-If you configured the data storage (steps 3 & 5), you can retrieve some links
-using these finders:
+You can retrieve some links using these finders:
 
 ```php
 <?php
 
 $linkManager = $container->get('mremi_url_shortener.link_manager');
 
-$linkManager->findOneByProviderAndShortUrl('bitly', 'http://bit.ly/ze6poY');
+$shortened = $linkManager->findOneByProviderAndShortUrl('bitly', 'http://bit.ly/ze6poY');
 
-$linkManager->findOneByProviderAndLongUrl('google', 'http://www.google.com');
+$expanded = $linkManager->findOneByProviderAndLongUrl('google', 'http://www.google.com');
 ```
 
-You can specify to fetch the expected link if it does not exist in database by
-adding `true` as third argument:
-
-```php
-<?php
-
-$linkManager->findOneByProviderAndShortUrl('bitly', 'http://bit.ly/ze6poY', true);
-```
+If you configured the data storage (steps 3 & 5), finders look first in
+database ; if the link is not found then an API call will be done.
 
 <a name="twig-functions"></a>
 
 ## Twig functions
 
-You can also simply shorten/expand a URL from a twig file. But It should be
-used with caution because it's not HTTP friendly.
+You can also simply shorten/expand a URL from a twig file. It should be used
+with caution if no data storage is configured, because it's not HTTP friendly.
 
 ``` html+jinja
 {# src/Acme/YourBundle/Resources/views/index.html.twig #}

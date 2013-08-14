@@ -2,7 +2,7 @@
 
 namespace Mremi\UrlShortenerBundle\Twig;
 
-use Mremi\UrlShortener\Provider\ChainProvider;
+use Mremi\UrlShortener\Model\LinkManagerInterface;
 
 /**
  * Url shortener extension class
@@ -12,18 +12,18 @@ use Mremi\UrlShortener\Provider\ChainProvider;
 class UrlShortenerExtension extends \Twig_Extension
 {
     /**
-     * @var ChainProvider
+     * @var LinkManagerInterface
      */
-    private $chainProvider;
+    private $linkManager;
 
     /**
      * Constructor
      *
-     * @param ChainProvider $chainProvider
+     * @param LinkManagerInterface $linkManager
      */
-    public function __construct(ChainProvider $chainProvider)
+    public function __construct(LinkManagerInterface $linkManager)
     {
-        $this->chainProvider = $chainProvider;
+        $this->linkManager = $linkManager;
     }
 
     /**
@@ -44,10 +44,12 @@ class UrlShortenerExtension extends \Twig_Extension
      * @param string $longUrl      URL to shorten
      *
      * @return string
+     *
+     * @throws \Mremi\UrlShortener\Exception\InvalidApiResponseException
      */
     public function shorten($providerName, $longUrl)
     {
-        $link = $this->chainProvider->getProvider($providerName)->shorten($longUrl);
+        $link = $this->linkManager->findOneByProviderAndLongUrl($providerName, $longUrl);
 
         return $link->getShortUrl();
     }
@@ -59,10 +61,12 @@ class UrlShortenerExtension extends \Twig_Extension
      * @param string $shortUrl     URL to expand
      *
      * @return string
+     *
+     * @throws \Mremi\UrlShortener\Exception\InvalidApiResponseException
      */
     public function expand($providerName, $shortUrl)
     {
-        $link = $this->chainProvider->getProvider($providerName)->expand($shortUrl);
+        $link = $this->linkManager->findOneByProviderAndShortUrl($providerName, $shortUrl);
 
         return $link->getLongUrl();
     }

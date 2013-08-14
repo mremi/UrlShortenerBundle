@@ -42,12 +42,16 @@ class MremiUrlShortenerExtension extends Extension
      */
     private function configureLinkManager(ContainerBuilder $container, array $config, XmlFileLoader $loader)
     {
-        $loader->load('orm.xml');
+        $loader->load('manager.xml');
 
-        $container->setAlias('mremi_url_shortener.link_manager', 'mremi_url_shortener.link_manager.doctrine');
+        $linkClass = $config['link_class'];
+
+        $suffix = 'Mremi\UrlShortener\Model\Link' === $linkClass ? 'default' : 'doctrine';
+
+        $container->setAlias('mremi_url_shortener.link_manager', sprintf('mremi_url_shortener.link_manager.%s', $suffix));
 
         $definition = $container->findDefinition('mremi_url_shortener.link_manager');
-        $definition->replaceArgument(0, $config['link_class']);
+        $definition->replaceArgument(1, $linkClass);
     }
 
     /**
@@ -70,7 +74,7 @@ class MremiUrlShortenerExtension extends Extension
         $definition->replaceArgument(2, $config['bitly']['password']);
 
         $definition = $container->getDefinition('mremi_url_shortener.bitly.provider');
-        $definition->replaceArgument(3, $config['bitly']['options']);
+        $definition->replaceArgument(2, $config['bitly']['options']);
     }
 
     /**
@@ -89,8 +93,8 @@ class MremiUrlShortenerExtension extends Extension
         $loader->load('google.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
-        $definition->replaceArgument(2, $config['google']['api_key']);
-        $definition->replaceArgument(3, $config['google']['options']);
+        $definition->replaceArgument(1, $config['google']['api_key']);
+        $definition->replaceArgument(2, $config['google']['options']);
     }
 
     /**

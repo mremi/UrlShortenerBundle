@@ -21,23 +21,17 @@ class LinkManager extends BaseLinkManager
     protected $objectManager;
 
     /**
-     * @var ChainProvider
-     */
-    protected $chainProvider;
-
-    /**
      * Constructor
      *
+     * @param ChainProvider $chainProvider A chain provider instance
      * @param string        $class         The Link class namespace
      * @param ObjectManager $objectManager An object manager instance
-     * @param ChainProvider $chainProvider A chain provider instance
      */
-    public function __construct($class, ObjectManager $objectManager, ChainProvider $chainProvider)
+    public function __construct(ChainProvider $chainProvider, $class, ObjectManager $objectManager)
     {
-        parent::__construct($class);
+        parent::__construct($chainProvider, $class);
 
         $this->objectManager = $objectManager;
-        $this->chainProvider = $chainProvider;
     }
 
     /**
@@ -56,56 +50,42 @@ class LinkManager extends BaseLinkManager
      * Finds one link by a provider and a short URL. If link does not exist in
      * storage system, try to fetch it using the given provider.
      *
-     * @param string  $providerName      A provider name, first used to retrieve data from database, or call him if fetchFromProvider is TRUE
-     * @param string  $shortUrl          A short URL
-     * @param boolean $fetchFromProvider TRUE whether you want to fetch data if does not exist in database, default FALSE
+     * @param string $providerName A provider name, first used to retrieve data from database, or call him if not found
+     * @param string $shortUrl     A short URL
      *
-     * @return LinkInterface|null
+     * @return LinkInterface
+     *
+     * @throws \Mremi\UrlShortener\Exception\InvalidApiResponseException
      */
-    public function findOneByProviderAndShortUrl($providerName, $shortUrl, $fetchFromProvider = false)
+    public function findOneByProviderAndShortUrl($providerName, $shortUrl)
     {
         $link = $this->findOneBy(array(
             'providerName' => $providerName,
             'shortUrl'     => $shortUrl,
         ));
 
-        if ($link) {
-            return $link;
-        }
-
-        if (false === $fetchFromProvider) {
-            return null;
-        }
-
-        return $this->chainProvider->getProvider($providerName)->expand($shortUrl);
+        return $link ?: parent::findOneByProviderAndShortUrl($providerName, $shortUrl);
     }
 
     /**
      * Finds one link by a provider and a long URL. If link does not exist in
      * storage system, try to fetch it using the given provider.
      *
-     * @param string  $providerName      A provider name, first used to retrieve data from database, or call him if fetchFromProvider is TRUE
-     * @param string  $longUrl           A long URL
-     * @param boolean $fetchFromProvider TRUE whether you want to fetch data if does not exist in database, default FALSE
+     * @param string $providerName A provider name, first used to retrieve data from database, or call him if not found
+     * @param string $longUrl      A long URL
      *
-     * @return LinkInterface|null
+     * @return LinkInterface
+     *
+     * @throws \Mremi\UrlShortener\Exception\InvalidApiResponseException
      */
-    public function findOneByProviderAndLongUrl($providerName, $longUrl, $fetchFromProvider = false)
+    public function findOneByProviderAndLongUrl($providerName, $longUrl)
     {
         $link = $this->findOneBy(array(
             'providerName' => $providerName,
             'longUrl'      => $longUrl,
         ));
 
-        if ($link) {
-            return $link;
-        }
-
-        if (false === $fetchFromProvider) {
-            return null;
-        }
-
-        return $this->chainProvider->getProvider($providerName)->shorten($longUrl);
+        return $link ?: parent::findOneByProviderAndLongUrl($providerName, $longUrl);
     }
 
     /**

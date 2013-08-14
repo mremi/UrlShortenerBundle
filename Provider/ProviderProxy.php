@@ -2,6 +2,7 @@
 
 namespace Mremi\UrlShortenerBundle\Provider;
 
+use Mremi\UrlShortener\Model\LinkInterface;
 use Mremi\UrlShortener\Provider\UrlShortenerProviderInterface;
 
 use Symfony\Component\Stopwatch\Stopwatch;
@@ -57,29 +58,25 @@ class ProviderProxy implements UrlShortenerProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function shorten($longUrl)
+    public function shorten(LinkInterface $link)
     {
-        $event = $this->startProfiling($longUrl);
+        $event = $this->startProfiling($link->getLongUrl());
 
-        $link = $this->provider->shorten($longUrl);
+        $this->provider->shorten($link);
 
         $this->stopProfiling($event, $link->getShortUrl());
-
-        return $link;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function expand($shortUrl)
+    public function expand(LinkInterface $link)
     {
-        $event = $this->startProfiling($shortUrl);
+        $event = $this->startProfiling($link->getShortUrl());
 
-        $link = $this->provider->expand($shortUrl);
+        $this->provider->expand($link);
 
         $this->stopProfiling($event, $link->getLongUrl());
-
-        return $link;
     }
 
     /**

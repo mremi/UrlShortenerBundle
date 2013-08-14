@@ -8,7 +8,7 @@
         <service id="mremi_url_shortener.twig.url_shortener_extension" class="Mremi\UrlShortenerBundle\Twig\UrlShortenerExtension">
             <tag name="twig.extension" />
 
-            <argument type="service" id="mremi_url_shortener.chain_provider" />
+            <argument type="service" id="mremi_url_shortener.link_manager" />
         </service>
     </services>
 </container>

@@ -30,7 +30,8 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(array(
                 'providerName' => 'google',
                 'shortUrl'     => 'http://goo.gl/fbsS',
-            )));
+            )))
+            ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Model\LinkInterface')));
 
         $this->chainProvider
             ->expects($this->never())
@@ -58,7 +59,7 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
-        $this->manager->findOneByProviderAndShortUrl('google', 'http://goo.gl/fbsS', true);
+        $this->manager->findOneByProviderAndShortUrl('google', 'http://goo.gl/fbsS');
     }
 
     /**
@@ -72,7 +73,8 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(array(
                 'providerName' => 'google',
                 'longUrl'      => 'http://www.google.com/',
-            )));
+            )))
+            ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Model\LinkInterface')));
 
         $this->chainProvider
             ->expects($this->never())
@@ -100,11 +102,11 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
-        $this->manager->findOneByProviderAndLongUrl('google', 'http://www.google.com/', true);
+        $this->manager->findOneByProviderAndLongUrl('google', 'http://www.google.com/');
     }
 
     /**
-     * Initializes manager property
+     * Initializes chainProvider & manager properties
      */
     protected function setUp()
     {
@@ -115,7 +117,7 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->manager = $this->getMockBuilder('Mremi\UrlShortenerBundle\Doctrine\LinkManager')
-            ->setConstructorArgs(array('Mremi\UrlShortenerBundle\Entity\Link', $objectManager, $this->chainProvider))
+            ->setConstructorArgs(array($this->chainProvider, 'Mremi\UrlShortenerBundle\Tests\Entity\Link', $objectManager))
             ->setMethods(array('findOneBy'))
             ->getMock();
     }

@@ -9,7 +9,6 @@
             <tag name="mremi_url_shortener.provider" />
 
             <argument type="service" id="mremi_url_shortener.http.client_factory" />
-            <argument type="service" id="mremi_url_shortener.link_manager" />
             <argument />
             <argument />
         </service>
