@@ -59,6 +59,10 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
+        $this->manager
+            ->expects($this->once())
+            ->method('save');
+
         $this->manager->findOneByProviderAndShortUrl('google', 'http://goo.gl/fbsS');
     }
 
@@ -102,6 +106,10 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('google'))
             ->will($this->returnValue($this->getMock('Mremi\UrlShortener\Provider\UrlShortenerProviderInterface')));
 
+        $this->manager
+            ->expects($this->once())
+            ->method('save');
+
         $this->manager->findOneByProviderAndLongUrl('google', 'http://www.google.com/');
     }
 
@@ -118,7 +126,7 @@ class LinkManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->manager = $this->getMockBuilder('Mremi\UrlShortenerBundle\Doctrine\LinkManager')
             ->setConstructorArgs(array($this->chainProvider, 'Mremi\UrlShortenerBundle\Tests\Entity\Link', $objectManager))
-            ->setMethods(array('findOneBy'))
+            ->setMethods(array('findOneBy', 'save'))
             ->getMock();
     }
 }

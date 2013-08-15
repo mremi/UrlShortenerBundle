@@ -269,7 +269,10 @@ $expanded = $linkManager->findOneByProviderAndLongUrl('google', 'http://www.goog
 ```
 
 If you configured the data storage (steps 3 & 5), finders look first in
-database ; if the link is not found then an API call will be done.
+database ; if the link exists then return it, otherwise an API call will be
+done and link will be saved.
+
+Else this will consume an API call.
 
 <a name="twig-functions"></a>
 

@@ -64,7 +64,16 @@ class LinkManager extends BaseLinkManager
             'shortUrl'     => $shortUrl,
         ));
 
-        return $link ?: parent::findOneByProviderAndShortUrl($providerName, $shortUrl);
+        if ($link) {
+            return $link;
+        }
+
+        $link = parent::findOneByProviderAndShortUrl($providerName, $shortUrl);
+
+        // link does not exist, save it
+        $this->save($link, true);
+
+        return $link;
     }
 
     /**
@@ -85,7 +94,16 @@ class LinkManager extends BaseLinkManager
             'longUrl'      => $longUrl,
         ));
 
-        return $link ?: parent::findOneByProviderAndLongUrl($providerName, $longUrl);
+        if ($link) {
+            return $link;
+        }
+
+        $link = parent::findOneByProviderAndLongUrl($providerName, $longUrl);
+
+        // link does not exist, save it
+        $this->save($link, true);
+
+        return $link;
     }
 
     /**
