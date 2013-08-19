@@ -165,20 +165,21 @@ Fow now, you just have to configure your Bit.ly username and password.
 mremi_url_shortener:
     link_class:   Mremi\UrlShortener\Model\Link
 
-    bitly:
-        enabled:             true
-        username:            your_bitly_username
-        password:            your_bitly_password
-        options:
-            connect_timeout: 1
-            timeout:         1
+    providers:
+        bitly:
+            enabled:             true
+            username:            your_bitly_username
+            password:            your_bitly_password
+            options:
+                connect_timeout: 1
+                timeout:         1
 
-    google:
-        enabled:             true
-        api_key:             your_api_key
-        options:
-            connect_timeout: 1
-            timeout:         1
+        google:
+            enabled:             true
+            api_key:             your_api_key
+            options:
+                connect_timeout: 1
+                timeout:         1
 ```
 
 ### Step 5: Update your database schema (optional)

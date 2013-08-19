@@ -63,18 +63,18 @@ class MremiUrlShortenerExtension extends Extension
      */
     private function configureBitly(ContainerBuilder $container, array $config, XmlFileLoader $loader)
     {
-        if (false === $config['bitly']['enabled']) {
+        if (false === $config['providers']['bitly']['enabled']) {
             return;
         }
 
         $loader->load('bitly.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.bitly.oauth_client');
-        $definition->replaceArgument(1, $config['bitly']['username']);
-        $definition->replaceArgument(2, $config['bitly']['password']);
+        $definition->replaceArgument(1, $config['providers']['bitly']['username']);
+        $definition->replaceArgument(2, $config['providers']['bitly']['password']);
 
         $definition = $container->getDefinition('mremi_url_shortener.bitly.provider');
-        $definition->replaceArgument(2, $config['bitly']['options']);
+        $definition->replaceArgument(2, $config['providers']['bitly']['options']);
     }
 
     /**
@@ -86,15 +86,15 @@ class MremiUrlShortenerExtension extends Extension
      */
     private function configureGoogle(ContainerBuilder $container, array $config, XmlFileLoader $loader)
     {
-        if (false === $config['google']['enabled']) {
+        if (false === $config['providers']['google']['enabled']) {
             return;
         }
 
         $loader->load('google.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
-        $definition->replaceArgument(1, $config['google']['api_key']);
-        $definition->replaceArgument(2, $config['google']['options']);
+        $definition->replaceArgument(1, $config['providers']['google']['api_key']);
+        $definition->replaceArgument(2, $config['providers']['google']['options']);
     }
 
     /**

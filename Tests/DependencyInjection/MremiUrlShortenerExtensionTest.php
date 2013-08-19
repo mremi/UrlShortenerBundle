@@ -43,8 +43,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new MremiUrlShortenerExtension;
         $config = $this->getFullConfig();
-        $config['bitly']['enabled'] = true;
-        unset($config['bitly']['username']);
+        $config['providers']['bitly']['enabled'] = true;
+        unset($config['providers']['bitly']['username']);
         $loader->load(array($config), new ContainerBuilder);
     }
 
@@ -58,8 +58,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new MremiUrlShortenerExtension;
         $config = $this->getFullConfig();
-        $config['bitly']['enabled'] = true;
-        $config['bitly']['username'] = '';
+        $config['providers']['bitly']['enabled'] = true;
+        $config['providers']['bitly']['username'] = '';
         $loader->load(array($config), new ContainerBuilder);
     }
 
@@ -73,8 +73,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new MremiUrlShortenerExtension;
         $config = $this->getFullConfig();
-        $config['bitly']['enabled'] = true;
-        unset($config['bitly']['password']);
+        $config['providers']['bitly']['enabled'] = true;
+        unset($config['providers']['bitly']['password']);
         $loader->load(array($config), new ContainerBuilder);
     }
 
@@ -88,8 +88,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $loader = new MremiUrlShortenerExtension;
         $config = $this->getFullConfig();
-        $config['bitly']['enabled'] = true;
-        $config['bitly']['password'] = '';
+        $config['providers']['bitly']['enabled'] = true;
+        $config['providers']['bitly']['password'] = '';
         $loader->load(array($config), new ContainerBuilder);
     }
 
@@ -127,8 +127,8 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
         $loader = new MremiUrlShortenerExtension;
         $config = $this->getFullConfig();
 
-        $config['bitly']['enabled']  = true;
-        $config['google']['enabled'] = true;
+        $config['providers']['bitly']['enabled']  = true;
+        $config['providers']['google']['enabled'] = true;
 
         $loader->load(array($config), $this->configuration);
         $this->assertTrue($this->configuration instanceof ContainerBuilder);
@@ -144,20 +144,21 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
         $yaml = <<<EOF
 link_class:   Mremi\UrlShortener\Model\Link
 
-bitly:
-    enabled:             false
-    username:            your_bitly_username
-    password:            your_bitly_password
-    options:
-        connect_timeout: 1
-        timeout:         1
+providers:
+    bitly:
+        enabled:             false
+        username:            your_bitly_username
+        password:            your_bitly_password
+        options:
+            connect_timeout: 1
+            timeout:         1
 
-google:
-    enabled:             false
-    api_key:             your_google_api_key
-    options:
-        connect_timeout: 1
-        timeout:         1
+    google:
+        enabled:             false
+        api_key:             your_google_api_key
+        options:
+            connect_timeout: 1
+            timeout:         1
 EOF;
         $parser = new Parser;
 
