@@ -51,7 +51,7 @@ class Configuration implements ConfigurationInterface
                                     ->addDefaultsIfNotSet()
                                     ->children()
                                         ->integerNode('connect_timeout')->defaultValue(1)->end()
-                                        ->scalarNode('timeout')->defaultValue(1)->end()
+                                        ->integerNode('timeout')->defaultValue(1)->end()
                                     ->end()
                                 ->end()
                             ->end()
