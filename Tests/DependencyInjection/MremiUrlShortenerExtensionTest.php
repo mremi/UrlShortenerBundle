@@ -202,7 +202,7 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getFullConfig()
     {
         $yaml = <<<EOF
-link_class:   Mremi\UrlShortener\Model\Link
+link_class: Mremi\UrlShortener\Model\Link
 
 providers:
     bitly:

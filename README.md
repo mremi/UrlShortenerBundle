@@ -163,7 +163,7 @@ Fow now, you just have to configure your Bit.ly username and password.
 ```yaml
 # app/config/config.yml
 mremi_url_shortener:
-    link_class:   Mremi\UrlShortener\Model\Link
+    link_class: Mremi\UrlShortener\Model\Link
 
     providers:
         bitly:
