@@ -124,6 +124,21 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests extension loading throws exception if Google's connect timeout is not numeric
+     *
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid type for path "mremi_url_shortener.providers.google.options.connect_timeout". Expected int, but got string.
+     */
+    public function testUrlShortenerLoadThrowsExceptionIfGoogleConnectTimeoutNotNumeric()
+    {
+        $loader = new MremiUrlShortenerExtension;
+        $config = $this->getFullConfig();
+        $config['providers']['google']['enabled'] = true;
+        $config['providers']['google']['options']['connect_timeout'] = 'foo';
+        $loader->load(array($config), new ContainerBuilder);
+    }
+
+    /**
      * Tests services existence
      */
     public function testUrlShortenerLoadServicesWithDefaults()
