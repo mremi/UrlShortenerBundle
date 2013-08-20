@@ -109,6 +109,21 @@ class MremiUrlShortenerExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests extension loading throws exception if Bit.ly's timeout is not numeric
+     *
+     * @expectedException        \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedExceptionMessage Invalid type for path "mremi_url_shortener.providers.bitly.options.timeout". Expected int, but got string.
+     */
+    public function testUrlShortenerLoadThrowsExceptionIfBitlyTimeoutNotNumeric()
+    {
+        $loader = new MremiUrlShortenerExtension;
+        $config = $this->getFullConfig();
+        $config['providers']['bitly']['enabled'] = true;
+        $config['providers']['bitly']['options']['timeout'] = 'foo';
+        $loader->load(array($config), new ContainerBuilder);
+    }
+
+    /**
      * Tests services existence
      */
     public function testUrlShortenerLoadServicesWithDefaults()
