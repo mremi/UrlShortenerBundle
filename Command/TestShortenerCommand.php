@@ -33,12 +33,17 @@ class TestShortenerCommand extends ContainerAwareCommand
         $chainProvider  = $this->getChainProvider();
 
         foreach ($chainProvider->getProviders() as $provider) {
-            $shortened = $provider->shorten('http://www.google.com/')->getShortUrl();
+            $link = $this->getLinkManager()->create();
+            $link->setLongUrl('http://www.google.com/');
+
+            $provider->shorten($link);
 
             $output->writeln(sprintf('* %s provider:', $provider->getName()));
+            $output->writeln(sprintf('    <info>Shorten <comment>http://www.google.com/</comment>:</info> %s', $link->getShortUrl()));
 
-            $output->writeln(sprintf('    <info>Shorten <comment>http://www.google.com/</comment>:</info> %s', $shortened));
-            $output->writeln(sprintf('    <info>Expand <comment>%s</comment>:</info> %s', $shortened, $provider->expand($shortened)->getLongUrl()));
+            $provider->expand($link);
+
+            $output->writeln(sprintf('    <info>Expand <comment>%s</comment>:</info> %s', $link->getShortUrl(), $link->getLongUrl()));
         }
     }
 
@@ -50,5 +55,15 @@ class TestShortenerCommand extends ContainerAwareCommand
     private function getChainProvider()
     {
         return $this->getContainer()->get('mremi_url_shortener.chain_provider');
+    }
+
+    /**
+     * Gets the link manager service
+     *
+     * @return \Mremi\UrlShortener\Model\LinkManagerInterface
+     */
+    private function getLinkManager()
+    {
+        return $this->getContainer()->get('mremi_url_shortener.link_manager');
     }
 }
