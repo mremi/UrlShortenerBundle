@@ -33,7 +33,6 @@ class MremiUrlShortenerExtension extends Extension
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('chain.xml');
-        $loader->load('http.xml');
         $loader->load('twig.xml');
 
         $this->configureLinkManager($container, $config, $loader);
@@ -79,11 +78,11 @@ class MremiUrlShortenerExtension extends Extension
         $loader->load('bitly.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.bitly.oauth_client');
-        $definition->replaceArgument(1, $config['providers']['bitly']['username']);
-        $definition->replaceArgument(2, $config['providers']['bitly']['password']);
+        $definition->replaceArgument(0, $config['providers']['bitly']['username']);
+        $definition->replaceArgument(1, $config['providers']['bitly']['password']);
 
         $definition = $container->getDefinition('mremi_url_shortener.bitly.provider');
-        $definition->replaceArgument(2, $config['providers']['bitly']['options']);
+        $definition->replaceArgument(1, $config['providers']['bitly']['options']);
     }
 
     /**
@@ -102,8 +101,8 @@ class MremiUrlShortenerExtension extends Extension
         $loader->load('google.xml');
 
         $definition = $container->getDefinition('mremi_url_shortener.google.provider');
-        $definition->replaceArgument(1, $config['providers']['google']['api_key']);
-        $definition->replaceArgument(2, $config['providers']['google']['options']);
+        $definition->replaceArgument(0, $config['providers']['google']['api_key']);
+        $definition->replaceArgument(1, $config['providers']['google']['options']);
     }
 
     /**

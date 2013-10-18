@@ -8,7 +8,6 @@
         <service id="mremi_url_shortener.google.provider" class="Mremi\UrlShortener\Provider\Google\GoogleProvider">
             <tag name="mremi_url_shortener.provider" />
 
-            <argument type="service" id="mremi_url_shortener.http.client_factory" />
             <argument />
             <argument />
         </service>
