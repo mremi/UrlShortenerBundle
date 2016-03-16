@@ -69,12 +69,11 @@ class ProviderProxy implements UrlShortenerProviderInterface
      */
     public function shorten(LinkInterface $link)
     {
-        $args = func_get_args();
-        $func = [$this->provider, 'shorten'];
+        $func = array($this->provider, 'shorten');
 
         $event = $this->startProfiling($link->getLongUrl());
 
-        call_user_func_array($func, $args);
+        call_user_func_array($func, func_get_args());
 
         $this->stopProfiling($event, $link->getShortUrl());
     }
@@ -84,12 +83,11 @@ class ProviderProxy implements UrlShortenerProviderInterface
      */
     public function expand(LinkInterface $link)
     {
-        $args = func_get_args();
-        $func = [$this->provider, 'expand'];
+        $func = array($this->provider, 'expand');
 
         $event = $this->startProfiling($link->getShortUrl());
 
-        call_user_func_array($func, $args);
+        call_user_func_array($func, func_get_args());
 
         $this->stopProfiling($event, $link->getLongUrl());
     }
