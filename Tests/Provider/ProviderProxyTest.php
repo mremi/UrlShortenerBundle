@@ -61,6 +61,38 @@ class ProviderProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test that the proxy will pass through additional
+     * arguments to `shorten()`
+     */
+    public function testVariadicShorten()
+    {
+        $link = $this->getMock('Mremi\UrlShortener\Model\LinkInterface');
+
+        $this->provider
+            ->expects($this->once())
+            ->method('shorten')
+            ->with($this->equalTo($link), $this->equalTo('bar'), $this->equalTo(12));
+
+        $this->providerProxy->shorten($link, 'bar', 12);
+    }
+
+    /**
+     * Test that the proxy will pass through additional
+     * arguments to `expand()`
+     */
+    public function testVariadicExpand()
+    {
+        $link = $this->getMock('Mremi\UrlShortener\Model\LinkInterface');
+
+        $this->provider
+            ->expects($this->once())
+            ->method('expand')
+            ->with($this->equalTo($link), $this->equalTo('foo'));
+
+        $this->providerProxy->expand($link, 'foo');
+    }
+
+    /**
      * Initializes providerProxy & provider properties
      */
     protected function setUp()
