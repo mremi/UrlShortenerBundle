@@ -10,7 +10,8 @@
             <argument />
         </service>
 
-        <service id="mremi_url_shortener.entity_manager" factory-service="doctrine" factory-method="getManager" class="Doctrine\ORM\EntityManager" public="false">
+        <service id="mremi_url_shortener.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
+            <factory class="doctrine" method="getManager" />
         </service>
 
         <service id="mremi_url_shortener.link_manager.doctrine" class="Mremi\UrlShortenerBundle\Doctrine\LinkManager" public="false">
