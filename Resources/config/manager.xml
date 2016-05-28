@@ -11,7 +11,7 @@
         </service>
 
         <service id="mremi_url_shortener.entity_manager" class="Doctrine\ORM\EntityManager" public="false">
-            <factory class="doctrine" method="getManager" />
+            <factory service="doctrine" method="getManager" />
         </service>
 
         <service id="mremi_url_shortener.link_manager.doctrine" class="Mremi\UrlShortenerBundle\Doctrine\LinkManager" public="false">
