@@ -9,7 +9,7 @@ MremiUrlShortenerBundle
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mremi/UrlShortenerBundle/badges/quality-score.png?s=a9e232e7ec75d70c038950b2f1aa72b313a31271)](https://scrutinizer-ci.com/g/mremi/UrlShortenerBundle/)
 [![Code Coverage](https://scrutinizer-ci.com/g/mremi/UrlShortenerBundle/badges/coverage.png?s=ddfb206093586a764b3fc9459a0cde20c108e547)](https://scrutinizer-ci.com/g/mremi/UrlShortenerBundle/)
 
-This bundle implements the [UrlShortener](https://github.com/mremi/UrlShortener) library for Symfony2+.
+This bundle implements the [UrlShortener](https://github.com/mremi/UrlShortener) library for Symfony.
 
 ## License
 
@@ -17,10 +17,10 @@ This bundle is available under the [MIT license](Resources/meta/LICENSE).
 
 ## Prerequisites
 
-This version of the bundle requires Symfony 2.8+.
+This version of the bundle requires Symfony 2.8, 3.0 or newer.
 
-For compatibility with Symfony 2.7 or earlier, please use ~1.0 version of this
-bundle.
+For compatibility with Symfony 2.7 or earlier, please use 1.0.* versions of
+this bundle.
 
 **Basic Docs**
 
@@ -47,34 +47,21 @@ Installation is a quick 5 step process:
 
 ### Step 1: Download MremiUrlShortenerBundle using composer
 
-Add MremiUrlShortenerBundle in your composer.json:
+Require `mremi/url-shortener-bundle` via composer:
 
-```js
-{
-    "require": {
-        "mremi/url-shortener-bundle": "dev-master"
-    }
-}
+```bash
+php composer.phar require mremi/url-shortener-bundle
+
 ```
 
-If you are using Symfony 2.7 or earlier, please specify ~1.0 version in your
-composer.json:
+Note: if you are using Symfony 2.7 or earlier, please require ~1.0.0 version:
 
-```js
-{
-    "require": {
-        "mremi/url-shortener-bundle": "~1.0"
-    }
-}
+```bash
+php composer.phar require mremi/url-shortener-bundle:~1.0.0
 ```
 
-Now tell composer to download the bundle by running the command:
-
-``` bash
-$ php composer.phar update mremi/url-shortener-bundle
-```
-
-Composer will install the bundle to your project's `vendor/mremi` directory.
+Composer will modify your composer.json file and install the bundle to your
+project's `vendor/mremi` directory.
 
 ### Step 2: Enable the bundle
 
