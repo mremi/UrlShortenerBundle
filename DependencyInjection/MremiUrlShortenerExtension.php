@@ -34,6 +34,7 @@ class MremiUrlShortenerExtension extends Extension
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('chain.xml');
         $loader->load('twig.xml');
+        $loader->load('console.xml');
 
         $this->configureLinkManager($container, $config, $loader);
         $this->configureBitly($container, $config, $loader);
