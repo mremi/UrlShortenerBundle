@@ -92,6 +92,11 @@ class ProviderDataCollector implements DataCollectorInterface, \Serializable
         $this->providers = $unserialized['providers'];
     }
 
+    public function reset()
+    {
+        $this->providers = [];
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -11,17 +11,39 @@
 
 namespace Mremi\UrlShortenerBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Mremi\UrlShortener\Provider\UrlShortenerProviderInterface;
+use Mremi\UrlShortener\Provider\ChainProvider;
+use Mremi\UrlShortener\Model\LinkManager;
 
 /**
  * Test shortener command.
  *
  * @author Rémi Marseille <marseille.remi@gmail.com>
  */
-class TestShortenerCommand extends ContainerAwareCommand
+class TestShortenerCommand extends Command
 {
+    /**
+     * @var ChainProvider
+     */
+    private $chainProvider;
+
+    /**
+     * @var LinkManager
+     */
+    private $linkManager;
+
+    public function __construct(ChainProvider $chainProvider, LinkManager $linkManager)
+    {
+        parent::__construct();
+
+        $this->chainProvider = $chainProvider;
+        $this->linkManager = $linkManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +53,14 @@ class TestShortenerCommand extends ContainerAwareCommand
 
         $this
             ->setDescription('Tests shortener')
-            ->setName('mremi:url-shortener:test');
+            ->setName('mremi:url-shortener:test')
+            ->addOption(
+                'provider',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'The short link provider'
+            )
+        ;
     }
 
     /**
@@ -39,40 +68,32 @@ class TestShortenerCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $chainProvider  = $this->getChainProvider();
+        $providerName = $input->getOption('provider');
+        if ($providerName) {
+            $provider =  $this->chainProvider->getProvider($providerName);
+            $this->shorten($provider, $output);
 
-        foreach ($chainProvider->getProviders() as $provider) {
-            $link = $this->getLinkManager()->create();
-            $link->setLongUrl('http://www.google.com/');
+            return;
+        }
 
-            $provider->shorten($link);
-
-            $output->writeln(sprintf('* %s provider:', $provider->getName()));
-            $output->writeln(sprintf('    <info>Shorten <comment>http://www.google.com/</comment>:</info> %s', $link->getShortUrl()));
-
-            $provider->expand($link);
-
-            $output->writeln(sprintf('    <info>Expand <comment>%s</comment>:</info> %s', $link->getShortUrl(), $link->getLongUrl()));
+        foreach ($this->chainProvider->getProviders() as $provider) {
+            $this->shorten($provider, $output);
         }
     }
 
-    /**
-     * Gets the chain provider service
-     *
-     * @return \Mremi\UrlShortener\Provider\ChainProvider
-     */
-    private function getChainProvider()
-    {
-        return $this->getContainer()->get('mremi_url_shortener.chain_provider');
-    }
 
-    /**
-     * Gets the link manager service
-     *
-     * @return \Mremi\UrlShortener\Model\LinkManagerInterface
-     */
-    private function getLinkManager()
+    private function shorten(UrlShortenerProviderInterface $provider, OutputInterface $output)
     {
-        return $this->getContainer()->get('mremi_url_shortener.link_manager');
+        $link = $this->linkManager->create();
+        $link->setLongUrl('http://www.google.com/');
+
+        $provider->shorten($link);
+
+        $output->writeln(sprintf('* %s provider:', $provider->getName()));
+        $output->writeln(sprintf('<info>Shorten <comment>http://www.google.com/</comment>:</info> %s', $link->getShortUrl()));
+
+        $provider->expand($link);
+
+        $output->writeln(sprintf('<info>Expand <comment>%s</comment>:</info> %s', $link->getShortUrl(), $link->getLongUrl()));
     }
 }
