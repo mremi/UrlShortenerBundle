@@ -67,6 +67,14 @@ class ProviderDataCollector implements DataCollectorInterface, \Serializable
     /**
      * {@inheritdoc}
      */
+    public function reset()
+    {
+        $this->providers = array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function serialize()
     {
         return serialize(array(
