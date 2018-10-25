@@ -51,7 +51,7 @@ class LinkManager extends BaseLinkManager
         $this->objectManager->persist($link);
 
         if ($flush) {
-            $this->objectManager->flush();
+            $this->objectManager->flush($link);
         }
     }
 
